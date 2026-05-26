@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useEditMode } from './edit-mode-provider';
 import { updateField } from '@/lib/actions/update-field';
 import { toast } from 'sonner';
@@ -11,6 +11,7 @@ export function EditableText({
 }: Common & { value: string | null; multiline?: boolean }) {
   const { editing } = useEditMode();
   const [val, setVal] = useState(value ?? '');
+  useEffect(() => { setVal(value ?? ''); }, [value]);
   if (!editing) return <span className={className}>{value || placeholder}</span>;
 
   async function commit() {
@@ -29,6 +30,7 @@ export function EditableText({
     onBlur: commit,
     placeholder,
     className,
+    'aria-label': field,
     style: { border: '1px dashed var(--brand-duck-300)', borderRadius: 'var(--r-2)', padding: '2px 6px', background: 'transparent', font: 'inherit', color: 'inherit', width: '100%' as const },
   };
   return multiline
@@ -41,9 +43,11 @@ export function EditableNumber({
 }: Common & { value: number | null; unit?: string }) {
   const { editing } = useEditMode();
   const [val, setVal] = useState(value != null ? String(value) : '');
+  useEffect(() => { setVal(value != null ? String(value) : ''); }, [value]);
   if (!editing) return <span className={className}>{value != null ? `${value}${unit ? ' ' + unit : ''}` : placeholder}</span>;
 
   async function commit() {
+    if (val === (value != null ? String(value) : '')) return;
     try {
       await updateField(entity, entityId, field, val);
       toast.success('Enregistré');
@@ -54,7 +58,7 @@ export function EditableNumber({
   }
   return (
     <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
-      <input inputMode="decimal" value={val}
+      <input inputMode="decimal" aria-label={field} value={val}
         onChange={(e) => setVal(e.target.value)} onBlur={commit}
         onKeyDown={(e) => { if (e.key === 'Enter') (e.target as HTMLInputElement).blur(); }}
         placeholder={placeholder} className={className}
