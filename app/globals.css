@@ -1,0 +1,30 @@
+@import "tailwindcss";
+
+:root {
+  --brand-duck: #4A6274;
+  --brand-duck-300: #6B8191;
+  --brand-sage: #CDD4CD;
+  --brand-linen: #EBEAE8;
+  --brand-paper: #f4f4f2;
+  --fg-1: #202930;
+  --fg-2: #2f3b45;
+  --fg-3: #556876;
+  --fg-4: #8BA0AF;
+  --r-1: 6px; --r-2: 8px; --r-3: 10px; --r-4: 12px; --r-5: 16px; --r-6: 20px;
+  --shadow-1: 0 1px 2px rgba(74,98,116,0.04);
+  --ease-snap: cubic-bezier(0.32, 0.72, 0, 1);
+  --bg: var(--brand-linen);
+}
+
+html, body {
+  background: var(--bg);
+  color: var(--fg-2);
+  font-family: -apple-system, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+  font-variant-numeric: tabular-nums;
+}
+
+body[data-edit-mode="on"] { --bg: #f6f3ec; }
+
+.micro-label {
+  font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--fg-4);
+}
