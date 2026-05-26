@@ -7,7 +7,7 @@ export default async function CataloguePage() {
   if (genreCount === 0) return <EmptyState />;
   const products = await prisma.product.findMany({
     where: { deletedAt: null, published: true },
-    orderBy: [{ genreId: 'asc' }, { position: 'asc' }],
+    orderBy: [{ genre: { position: 'asc' } }, { position: 'asc' }],
     include: { genre: { select: { slug: true } } },
   });
   return (
