@@ -1,0 +1,109 @@
+generator client {
+  provider = "prisma-client-js"
+}
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model AdminUser {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+}
+
+model SiteSettings {
+  id         Int      @id @default(1)
+  brandName  String   @default("")
+  monogram   String   @default("")
+  quoteEmail String   @default("")
+  updatedAt  DateTime @updatedAt
+}
+
+model Genre {
+  id          String    @id @default(cuid())
+  slug        String    @unique
+  name        String
+  description String?
+  position    Int       @default(0)
+  products    Product[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model FabricColor {
+  id       String    @id @default(cuid())
+  name     String
+  hex      String
+  position Int       @default(0)
+  products Product[]
+}
+
+model Size {
+  id       String        @id @default(cuid())
+  label    String        @unique
+  position Int           @default(0)
+  products ProductSize[]
+}
+
+model Product {
+  id             String   @id @default(cuid())
+  slug           String   @unique
+  designation    String
+  description    String?  @db.Text
+  refInterne     String?  @unique
+  refFournisseur String?
+  prix           Decimal  @db.Decimal(8, 2)
+  published      Boolean  @default(true)
+  deletedAt      DateTime?
+
+  genreId        String
+  genre          Genre        @relation(fields: [genreId], references: [id])
+  fabricColorId  String?
+  fabricColor    FabricColor? @relation(fields: [fabricColorId], references: [id])
+  logoId         String?
+  logo           Logo?        @relation(fields: [logoId], references: [id])
+
+  sizes          ProductSize[]
+  images         ProductImage[]
+
+  position       Int      @default(0)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model ProductSize {
+  productId String
+  sizeId    String
+  stock     Int     @default(0)
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  size      Size    @relation(fields: [sizeId], references: [id])
+  @@id([productId, sizeId])
+}
+
+model ProductImage {
+  id        String  @id @default(cuid())
+  productId String
+  url       String
+  width     Int
+  height    Int
+  position  Int     @default(0)
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
+
+model Logo {
+  id        String    @id @default(cuid())
+  name      String
+  kind      LogoKind
+  url       String
+  monoColor String?
+  colors    String[]
+  position  Int       @default(0)
+  products  Product[]
+}
+
+enum LogoKind {
+  MONO
+  MULTI
+}

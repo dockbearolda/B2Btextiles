@@ -42,3 +42,5 @@ next-env.d.ts
 
 # local image storage (STORAGE=local)
 /public/uploads
+
+/lib/generated/prisma
