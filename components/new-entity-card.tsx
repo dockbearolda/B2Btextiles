@@ -29,7 +29,7 @@ export function NewEntityCard({
   if (!open) return <button style={box} onClick={() => setOpen(true)}><Plus size={16} /> {label}</button>;
   return (
     <div style={{ ...box, cursor: 'default', flexDirection: asRow ? 'row' : 'column', alignItems: 'stretch' }}>
-      <input autoFocus value={name} placeholder={label} onChange={(e) => setName(e.target.value)}
+      <input autoFocus aria-label={label} value={name} placeholder={label} onChange={(e) => setName(e.target.value)}
         onKeyDown={(e) => { if (e.key === 'Enter') submit(); if (e.key === 'Escape') setOpen(false); }}
         style={{ font: 'inherit', padding: 6, border: '1px solid var(--brand-sage)', borderRadius: 'var(--r-2)' }} />
       <div style={{ display: 'flex', gap: 6, marginTop: asRow ? 0 : 8 }}>
