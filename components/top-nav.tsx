@@ -1,5 +1,5 @@
-import Link from 'next/link';
 import { EditableText } from './editable-text';
+import { BrandLink } from './brand-link';
 
 export function TopNav({ brandName, monogram }: { brandName: string; monogram: string }) {
   return (
@@ -8,7 +8,7 @@ export function TopNav({ brandName, monogram }: { brandName: string; monogram: s
       borderBottom: '1px solid var(--brand-sage)', background: '#ffffffaa', backdropFilter: 'blur(6px)',
       position: 'sticky', top: 0, zIndex: 20,
     }}>
-      <Link href="/catalogue" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none', color: 'var(--fg-1)' }}>
+      <BrandLink>
         <span style={{
           width: 34, height: 34, display: 'grid', placeItems: 'center', borderRadius: 'var(--r-3)',
           background: 'var(--brand-duck)', color: '#fff', fontWeight: 600, fontSize: 13,
@@ -18,7 +18,7 @@ export function TopNav({ brandName, monogram }: { brandName: string; monogram: s
         <strong style={{ fontSize: 16 }}>
           <EditableText entity="site" entityId="1" field="brandName" value={brandName} placeholder="Nom de la maison" />
         </strong>
-      </Link>
+      </BrandLink>
     </header>
   );
 }
