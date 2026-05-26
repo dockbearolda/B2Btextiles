@@ -7,7 +7,8 @@ import { verify } from '@node-rs/argon2';
 const credsSchema = z.object({ email: z.string().email(), password: z.string().min(1) });
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
-  trustHost: true,
+  trustHost: true, // Railway: request host may differ from the configured URL
+
   session: { strategy: 'jwt', maxAge: 60 * 60 * 24 * 30 },
   pages: { signIn: '/login' },
   providers: [
