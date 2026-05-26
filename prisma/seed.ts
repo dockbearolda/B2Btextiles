@@ -20,4 +20,9 @@ async function main() {
     console.log('ADMIN_EMAIL/ADMIN_PASSWORD non définis — seed admin ignoré.');
   }
 }
-main().finally(() => prisma.$disconnect());
+main()
+  .catch((e) => {
+    console.error(e);
+    process.exit(1);
+  })
+  .finally(() => prisma.$disconnect());
