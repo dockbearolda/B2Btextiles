@@ -59,20 +59,26 @@ Fichiers créés dans ce plan (chemins exacts, racine = dossier projet) :
 - Modify: `app/globals.css`, `app/page.tsx`, `package.json`
 - Create: `lib/slug.ts`, `lib/slug.test.ts`, `vitest.config.ts`
 
-- [ ] **Step 1: Mettre `docs/` de côté et scaffolder dans un dossier temporaire**
+- [ ] **Step 1: Scaffolder dans un dossier temporaire puis rapatrier (sans casser `.git`/`docs`)**
 
-create-next-app refuse un dossier non vide. On scaffolde à côté puis on rapatrie.
+create-next-app refuse un dossier non vide. On scaffolde dans `.scaffold` puis on déplace, en **excluant tout `.git`** et **sans toucher** à `docs/`. `--disable-git` empêche un init git parasite ; `--skip-install` évite de déplacer un gros `node_modules` (les deps sont installées à l'étape 2).
 
 Run:
 ```bash
-npx create-next-app@latest .scaffold --ts --tailwind --eslint --app --no-src-dir --import-alias "@/*" --use-npm --yes
+npx create-next-app@latest .scaffold --ts --tailwind --eslint --app --no-src-dir --import-alias "@/*" --use-npm --skip-install --disable-git --yes
 shopt -s dotglob
-mv .scaffold/* .
+for item in .scaffold/*; do
+  base=$(basename "$item")
+  [ "$base" = ".git" ] && continue          # ne jamais écraser notre repo
+  rm -rf "./$base" 2>/dev/null || true       # remplace un éventuel fichier de même nom (ex. .gitignore)
+  mv "$item" .
+done
 shopt -u dotglob
-rmdir .scaffold
+rm -rf .scaffold
 printf '\n# local image storage (STORAGE=local)\n/public/uploads\n' >> .gitignore
 ```
-Expected: `app/`, `package.json`, `tsconfig.json`, `next.config.ts`, `postcss.config.mjs` présents à la racine ; `docs/` et `.git/` intacts.
+> La boucle n'itère que sur le contenu de `.scaffold` (package.json, app/, .gitignore, tsconfig.json, etc.) : `docs/` et `.git/` à la racine ne sont jamais touchés.
+Expected: `app/`, `package.json`, `tsconfig.json`, `next.config.ts`, `postcss.config.mjs` présents à la racine ; `docs/` et `.git/` intacts ; aucun dossier `.scaffold` résiduel.
 
 - [ ] **Step 2: Installer les dépendances du projet**
 
