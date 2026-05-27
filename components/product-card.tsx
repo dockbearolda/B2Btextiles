@@ -7,7 +7,7 @@ import { toast } from 'sonner';
 import { Trash2 } from 'lucide-react';
 
 export type CardProduct = {
-  id: string; slug: string; designation: string; prix: string; refInterne: string | null; genreSlug: string;
+  id: string; slug: string; designation: string; prix: string; refInterne: string | null; genreSlug: string; imageUrl: string | null;
 };
 
 export function ProductCard({ p }: { p: CardProduct }) {
@@ -27,7 +27,9 @@ export function ProductCard({ p }: { p: CardProduct }) {
     }}>
       <Link href={`/catalogue/${p.genreSlug}/${p.slug}`}
         style={{ display: 'block', textDecoration: 'none', color: 'var(--fg-2)', padding: 14 }}>
-        <div style={{ aspectRatio: '4 / 3', borderRadius: 'var(--r-3)', background: 'var(--brand-linen)', marginBottom: 10 }} />
+        <div style={{ aspectRatio: '4 / 3', borderRadius: 'var(--r-3)', background: 'var(--brand-linen)', marginBottom: 10, overflow: 'hidden' }}>
+          {p.imageUrl && <img src={p.imageUrl} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />}
+        </div>
         <strong style={{ color: 'var(--fg-1)' }}>{p.designation}</strong>
         <div className="micro-label" style={{ marginTop: 4 }}>{p.refInterne ?? ''}</div>
         <div style={{ marginTop: 6, fontWeight: 600 }}>{p.prix} €</div>

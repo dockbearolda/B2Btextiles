@@ -2,16 +2,18 @@ import { prisma } from '@/lib/db';
 import { notFound } from 'next/navigation';
 import { EditableText, EditableNumber } from '@/components/editable-text';
 import { EditableSelect } from '@/components/editable-select';
+import { ProductGallery } from '@/components/product-gallery';
+import { thumbUrlFromUrl } from '@/lib/images/keys';
 
 export default async function ProductPage({ params }: { params: Promise<{ productSlug: string }> }) {
   const { productSlug } = await params;
-  const product = await prisma.product.findUnique({ where: { slug: productSlug } });
+  const product = await prisma.product.findUnique({ where: { slug: productSlug }, include: { images: { orderBy: { position: 'asc' } } } });
   if (!product || product.deletedAt) notFound();
   const genres = await prisma.genre.findMany({ orderBy: { position: 'asc' }, select: { id: true, name: true } });
 
   return (
     <article style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24, maxWidth: 900 }}>
-      <div style={{ aspectRatio: '4 / 3', borderRadius: 'var(--r-5)', background: 'var(--brand-linen)' }} />
+      <ProductGallery productId={product.id} images={product.images.map((i) => ({ id: i.id, url: i.url, thumbUrl: thumbUrlFromUrl(i.url), width: i.width, height: i.height, position: i.position }))} />
       <div style={{ display: 'grid', gap: 12, alignContent: 'start' }}>
         <h1 style={{ color: 'var(--fg-1)' }}>
           <EditableText entity="product" entityId={product.id} field="designation" value={product.designation} />
