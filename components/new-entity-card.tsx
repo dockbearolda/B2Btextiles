@@ -28,11 +28,11 @@ export function NewEntityCard({
   };
   if (!open) return <button style={box} onClick={() => setOpen(true)}><Plus size={16} /> {label}</button>;
   return (
-    <div style={{ ...box, cursor: 'default', flexDirection: asRow ? 'row' : 'column', alignItems: 'stretch' }}>
+    <div style={{ ...box, cursor: 'default', flexDirection: 'column', alignItems: 'stretch' }}>
       <input autoFocus aria-label={label} value={name} placeholder={label} onChange={(e) => setName(e.target.value)}
         onKeyDown={(e) => { if (e.key === 'Enter') submit(); if (e.key === 'Escape') setOpen(false); }}
-        style={{ font: 'inherit', padding: 6, border: '1px solid var(--brand-sage)', borderRadius: 'var(--r-2)' }} />
-      <div style={{ display: 'flex', gap: 6, marginTop: asRow ? 0 : 8 }}>
+        style={{ font: 'inherit', padding: 6, border: '1px solid var(--brand-sage)', borderRadius: 'var(--r-2)', width: '100%', minWidth: 0, boxSizing: 'border-box' }} />
+      <div style={{ display: 'flex', gap: 6, marginTop: 8 }}>
         <button onClick={submit} disabled={pending} style={{ flex: 1, padding: 6, border: 0, borderRadius: 'var(--r-2)', background: 'var(--brand-duck)', color: '#fff' }}>OK</button>
         <button onClick={() => setOpen(false)} style={{ padding: 6, border: 0, borderRadius: 'var(--r-2)', background: 'var(--brand-linen)' }}>Annuler</button>
       </div>
