@@ -93,6 +93,9 @@ model ProductImage {
   width     Int
   height    Int
   position  Int     @default(0)
+  offsetX   Float   @default(0) // pan X, % of frame (-100..100), 0 = centered
+  offsetY   Float   @default(0) // pan Y, % of frame
+  scale     Float   @default(1) // zoom; 1 = whole photo fits (contain)
   product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 }
 

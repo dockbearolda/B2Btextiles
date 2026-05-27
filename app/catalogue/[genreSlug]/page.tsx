@@ -21,7 +21,7 @@ export default async function GenrePage({ params }: { params: Promise<{ genreSlu
       </h1>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 16 }}>
         {products.map((p) => (
-          <ProductCard key={p.id} p={{ id: p.id, slug: p.slug, designation: p.designation, prix: p.prix.toFixed(2), refInterne: p.refInterne, genreSlug: genre.slug, imageUrl: p.images[0] ? thumbUrlFromUrl(p.images[0].url) : null }} />
+          <ProductCard key={p.id} p={{ id: p.id, slug: p.slug, designation: p.designation, prix: p.prix.toFixed(2), refInterne: p.refInterne, genreSlug: genre.slug, imageUrl: p.images[0] ? thumbUrlFromUrl(p.images[0].url) : null, imageFrame: p.images[0] ? { offsetX: p.images[0].offsetX, offsetY: p.images[0].offsetY, scale: p.images[0].scale } : null }} />
         ))}
         <NewProductCard genreId={genre.id} genreSlug={genre.slug} />
       </div>

@@ -57,3 +57,19 @@ export async function moveProductImage(id: string, dir: 'up' | 'down') {
   revalidatePath('/', 'layout');
   return { ok: true };
 }
+
+const clamp = (v: number, lo: number, hi: number) => Math.max(lo, Math.min(hi, v));
+
+export async function setImageFraming(id: string, framing: { offsetX: number; offsetY: number; scale: number }) {
+  await requireAdmin();
+  await prisma.productImage.update({
+    where: { id },
+    data: {
+      offsetX: clamp(framing.offsetX, -100, 100),
+      offsetY: clamp(framing.offsetY, -100, 100),
+      scale: clamp(framing.scale, 1, 4),
+    },
+  });
+  revalidatePath('/', 'layout');
+  return { ok: true };
+}

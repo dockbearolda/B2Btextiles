@@ -13,7 +13,7 @@ export default async function ProductPage({ params }: { params: Promise<{ produc
 
   return (
     <article style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24, maxWidth: 900 }}>
-      <ProductGallery productId={product.id} images={product.images.map((i) => ({ id: i.id, url: i.url, thumbUrl: thumbUrlFromUrl(i.url), width: i.width, height: i.height, position: i.position }))} />
+      <ProductGallery productId={product.id} images={product.images.map((i) => ({ id: i.id, url: i.url, thumbUrl: thumbUrlFromUrl(i.url), width: i.width, height: i.height, position: i.position, offsetX: i.offsetX, offsetY: i.offsetY, scale: i.scale }))} />
       <div style={{ display: 'grid', gap: 12, alignContent: 'start' }}>
         <h1 style={{ color: 'var(--fg-1)' }}>
           <EditableText entity="product" entityId={product.id} field="designation" value={product.designation} />
