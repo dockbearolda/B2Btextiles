@@ -4,7 +4,8 @@ import { z } from 'zod';
 import { prisma } from '@/lib/db';
 import { verify } from '@node-rs/argon2';
 
-const credsSchema = z.object({ email: z.string().email(), password: z.string().min(1) });
+// `email` holds a free-form identifier (login can be a username like "loic", not only an email).
+const credsSchema = z.object({ email: z.string().min(1), password: z.string().min(1) });
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   trustHost: true, // Railway: request host may differ from the configured URL
