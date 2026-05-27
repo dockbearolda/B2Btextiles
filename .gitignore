@@ -45,3 +45,6 @@ next-env.d.ts
 /public/uploads
 
 /lib/generated/prisma
+
+# local image uploads (dev; prod uses a Railway volume)
+/.data
